@@ -1,12 +1,22 @@
 {
   "name": "amigo-server",
   "version": "0.1.0",
-  "description": "",
-  "keywords": [],
+  "description": "Server that allows you to create and manage a graph of users linked to others users as friends.",
+  "keywords": [
+    "nodejs",
+    "typescript",
+    "restify",
+    "friends"
+  ],
   "author": "Gary DeReese Jr",
   "license": "MIT",
-  "repository": {},
-  "bugs": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gdereese/amigo-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gdereese/amigo-server/issues"
+  },
   "main": "dist/index.js",
   "bin": "dist/index.js",
   "files": ["dist/*.js"],
