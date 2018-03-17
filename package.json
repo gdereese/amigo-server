@@ -19,7 +19,9 @@
   },
   "main": "dist/index.js",
   "bin": "dist/index.js",
-  "files": ["dist/*.js"],
+  "files": [
+    "dist/*.js"
+  ],
   "scripts": {
     "build": "npm run-script lint && tsc",
     "license-check": "abogado",
@@ -35,7 +37,7 @@
     "@types/lodash": "4.14.105",
     "@types/node": "9.4.7",
     "@types/restify": "5.0.7",
-    "abogado": "1.0.1",
+    "abogado": "1.0.4",
     "jasmine-ts": "0.2.1",
     "prettier": "1.11.1",
     "tslint": "5.9.1",
