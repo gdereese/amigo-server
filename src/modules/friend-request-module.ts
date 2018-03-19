@@ -37,7 +37,7 @@ export function register(server: Server, routeBase: string) {
         'Location',
         server.router.render('get-friend-request', { id: friendRequest.id })
       );
-      res.send(202, friendRequest);
+      res.send(201, friendRequest);
 
       next();
     }

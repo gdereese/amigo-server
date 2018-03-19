@@ -5,7 +5,7 @@ import * as FriendModule from './modules/friend-module';
 import * as FriendRequestModule from './modules/friend-request-module';
 
 export class AmigoServer {
-  private server: Server;
+  public server: Server;
 
   constructor() {
     this.server = restify.createServer();
@@ -19,13 +19,11 @@ export class AmigoServer {
     FriendRequestModule.register(this.server, '/request');
   }
 
-  public start(port: number) {
-    this.server.listen(port, () =>
-      console.log(`amigo-server listening on port ${port} (Ctrl+C to stop)...`)
-    );
+  public start(port: number, address?: string, done?: () => void) {
+    this.server.listen(port, address, done);
   }
 
-  public stop() {
-    this.server.removeAllListeners();
+  public stop(done?: () => void) {
+    this.server.close(done);
   }
 }

@@ -1,6 +1,6 @@
 import * as program from 'commander';
 
-import { AmigoServer } from './server';
+import { AmigoServer } from './amigo-server';
 
 program
   .option('-p, --port <n>', 'Port to listen on', parseInt)
@@ -16,6 +16,12 @@ if (!program.port) {
 }
 
 const server = new AmigoServer();
-server.start(program.port);
+server.start(program.port, '127.0.0.1', () => {
+  console.log(
+    `amigo-server listening on ${server.server.address().address}:${
+      server.server.address().port
+    } (Ctrl+C to stop)...`
+  );
+});
 
 export { AmigoServer };
