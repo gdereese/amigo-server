@@ -2,10 +2,12 @@ import { Next, Request, Response } from 'restify';
 import * as restifyClients from 'restify-clients';
 
 import { AmigoServer } from '../../src/amigo-server';
+import { MemoryStore } from '../../src/data/memory-store';
 import { FriendRequest } from '../../src/models/friend-request';
-import { MemoryStore } from '../../src/modules/memory-store';
 
 describe('Endpoint: Get Pending Friend Requests', () => {
+  const friendRequests = new MemoryStore<FriendRequest>();
+
   const server: AmigoServer = new AmigoServer();
   let client = null;
 
@@ -22,7 +24,7 @@ describe('Endpoint: Get Pending Friend Requests', () => {
   });
 
   beforeEach(() => {
-    MemoryStore.friendRequests = [
+    friendRequests.initialize([
       {
         accepted: null,
         id: 1,
@@ -35,7 +37,7 @@ describe('Endpoint: Get Pending Friend Requests', () => {
         recipientUserId: '2',
         senderUserId: '1'
       }
-    ];
+    ]);
   });
 
   afterAll(done => {

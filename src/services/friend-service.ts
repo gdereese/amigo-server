@@ -1,23 +1,18 @@
-import * as _ from 'lodash';
-import * as lodashQuery from 'lodash-query';
-
+import { RepositoryProvider } from '../data/repository-provider';
 import { Friend } from '../models/friend';
-import { MemoryStore } from '../modules/memory-store';
-
-const query = lodashQuery(_, false);
 
 export class FriendService {
-  public deleteFriend(id: number): Promise<any> {
-    _.remove(MemoryStore.friends, { id });
+  private friends = RepositoryProvider(Friend);
 
-    return Promise.resolve();
+  public deleteFriend(id: number): Promise<any> {
+    return this.friends.delete(id);
   }
 
   public getFriend(id: number): Promise<Friend> {
-    return Promise.resolve(_.find(MemoryStore.friends, { id }));
+    return this.friends.get(id);
   }
 
   public queryFriends(criteria: any): Promise<Friend[]> {
-    return query(MemoryStore.friends, criteria);
+    return this.friends.query(criteria);
   }
 }

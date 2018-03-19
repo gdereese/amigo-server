@@ -2,10 +2,12 @@ import { Next, Request, Response } from 'restify';
 import * as restifyClients from 'restify-clients';
 
 import { AmigoServer } from '../../src/amigo-server';
+import { MemoryStore } from '../../src/data/memory-store';
 import { Friend } from '../../src/models/friend';
-import { MemoryStore } from '../../src/modules/memory-store';
 
 describe('Endpoint: Delete Friend', () => {
+  const friends = new MemoryStore<Friend>();
+
   const server: AmigoServer = new AmigoServer();
   let client = null;
 
@@ -22,14 +24,14 @@ describe('Endpoint: Delete Friend', () => {
   });
 
   beforeEach(() => {
-    MemoryStore.friends = [
+    friends.initialize([
       {
         created: new Date(),
         friendUserId: '2',
         id: 1,
         userId: '1'
       }
-    ];
+    ]);
   });
 
   afterAll(done => {

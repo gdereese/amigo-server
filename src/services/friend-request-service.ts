@@ -1,102 +1,89 @@
-import * as _ from 'lodash';
-import * as lodashQuery from 'lodash-query';
 import * as moment from 'moment';
 
+import { RepositoryProvider } from '../data/repository-provider';
 import { Friend } from '../models/friend';
 import { FriendRequest } from '../models/friend-request';
 import { SubmitFriendRequest } from '../models/submit-friend-request';
-import { MemoryStore } from '../modules/memory-store';
-
-const query = lodashQuery(_, false);
 
 export class FriendRequestService {
-  public acceptFriendRequest(id: number): Promise<any> {
-    const friendRequest = _.find(MemoryStore.friendRequests, { id });
+  private friends = RepositoryProvider(Friend);
+  private friendRequests = RepositoryProvider(FriendRequest);
+
+  public async acceptFriendRequest(id: number): Promise<any> {
+    const friendRequest = await this.friendRequests.get(id);
     const now = moment().toDate();
 
     // mark friend request as accepted
     friendRequest.accepted = now;
+    await this.friendRequests.update(friendRequest);
 
     // mark any similar request from the recipient end as accepted
-    const mutualFriendRequest = _.find(MemoryStore.friendRequests, {
+    const mutualFriendRequest = (await this.friendRequests.query({
       recipientUserId: friendRequest.senderUserId,
       senderUserId: friendRequest.recipientUserId
-    });
+    }))[0];
     if (mutualFriendRequest) {
       mutualFriendRequest.accepted = now;
+      await this.friendRequests.update(mutualFriendRequest);
     }
 
     // create new friend for sender
     const senderFriend = {
       created: now,
       friendUserId: friendRequest.recipientUserId,
-      id: this.nextId(MemoryStore.friends),
+      id: null,
       userId: friendRequest.senderUserId
     };
-    MemoryStore.friends.push(senderFriend);
+    await this.friends.create(senderFriend);
 
     // create new friend for recipient
     const recipientFriend = {
       created: now,
       friendUserId: friendRequest.senderUserId,
-      id: this.nextId(MemoryStore.friends),
+      id: null,
       userId: friendRequest.recipientUserId
     };
-    MemoryStore.friends.push(recipientFriend);
+    await this.friends.create(recipientFriend);
 
     return Promise.resolve({ senderFriend, recipientFriend });
   }
 
   public cancelFriendRequest(id: number): Promise<any> {
-    _.remove(MemoryStore.friendRequests, { id });
-
-    return Promise.resolve();
+    return this.friendRequests.delete(id);
   }
 
   public getFriendRequest(id: number): Promise<FriendRequest> {
-    return Promise.resolve(_.find(MemoryStore.friendRequests, { id }));
+    return this.friendRequests.get(id);
   }
 
-  public getFriendRequestBySenderAndRecipient(
+  public async getFriendRequestBySenderAndRecipient(
     senderUserId: string,
     recipientUserId: string
   ): Promise<FriendRequest> {
-    return Promise.resolve(
-      _.find(MemoryStore.friendRequests, {
-        recipientUserId,
-        senderUserId
-      })
-    );
+    const friendRequest = (await this.friendRequests.query({
+      recipientUserId,
+      senderUserId
+    }))[0];
+
+    return Promise.resolve(friendRequest);
   }
 
   public queryFriendRequests(criteria: any): Promise<FriendRequest[]> {
-    return Promise.resolve(query(MemoryStore.friendRequests, criteria));
+    return this.friendRequests.query(criteria);
   }
 
   public rejectFriendRequest(id: number): Promise<any> {
-    _.remove(MemoryStore.friendRequests, { id });
-
-    return Promise.resolve();
+    return this.friendRequests.delete(id);
   }
 
   public submitRequest(request: SubmitFriendRequest): Promise<FriendRequest> {
     const friendRequest: FriendRequest = {
       accepted: null,
-      id: this.nextId(MemoryStore.friendRequests),
+      id: null,
       recipientUserId: request.recipientUserId,
       senderUserId: request.senderUserId
     };
-    MemoryStore.friendRequests.push(friendRequest);
 
-    return Promise.resolve(friendRequest);
-  }
-
-  private nextId(collection: any, propertyName: string = 'id'): number {
-    const itemWithMax = _.maxBy(collection, propertyName);
-    if (!itemWithMax) {
-      return 1;
-    }
-
-    return itemWithMax[propertyName] + 1;
+    return this.friendRequests.create(friendRequest);
   }
 }

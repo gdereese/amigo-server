@@ -2,10 +2,12 @@ import { Next, Request, Response } from 'restify';
 import * as restifyClients from 'restify-clients';
 
 import { AmigoServer } from '../../src/amigo-server';
+import { MemoryStore } from '../../src/data/memory-store';
 import { FriendRequest } from '../../src/models/friend-request';
-import { MemoryStore } from '../../src/modules/memory-store';
 
 describe('Endpoint: Reject Friend Request', () => {
+  const friendRequests = new MemoryStore<FriendRequest>();
+
   const server: AmigoServer = new AmigoServer();
   let client = null;
 
@@ -22,14 +24,14 @@ describe('Endpoint: Reject Friend Request', () => {
   });
 
   beforeEach(() => {
-    MemoryStore.friendRequests = [
+    friendRequests.initialize([
       {
         accepted: null,
         id: 1,
         recipientUserId: '1',
         senderUserId: '2'
       }
-    ];
+    ]);
   });
 
   afterAll(done => {
@@ -54,18 +56,20 @@ describe('Endpoint: Reject Friend Request', () => {
 
   it('returns 409 if friend request is already accepted', done => {
     const id = 1;
-    MemoryStore.friendRequests[0].accepted = new Date();
+    friendRequests.get(id).then(friendRequest => {
+      friendRequest.accepted = new Date();
 
-    client.post(
-      `/request/${id}/reject`,
-      (err, req: Request, res: Response, obj) => {
-        expect(res.statusCode).toBe(409);
+      client.post(
+        `/request/${id}/reject`,
+        (err, req: Request, res: Response, obj) => {
+          expect(res.statusCode).toBe(409);
 
-        expect(err).toBeTruthy();
+          expect(err).toBeTruthy();
 
-        done();
-      }
-    );
+          done();
+        }
+      );
+    });
   });
 
   it('returns 200 if successful', done => {

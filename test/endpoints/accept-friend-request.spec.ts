@@ -2,10 +2,14 @@ import { Next, Request, Response } from 'restify';
 import * as restifyClients from 'restify-clients';
 
 import { AmigoServer } from '../../src/amigo-server';
+import { MemoryStore } from '../../src/data/memory-store';
+import { RepositoryProvider } from '../../src/data/repository-provider';
+import { Friend } from '../../src/models/friend';
 import { FriendRequest } from '../../src/models/friend-request';
-import { MemoryStore } from '../../src/modules/memory-store';
 
 describe('Endpoint: Accept Friend Request', () => {
+  const friendRequests = new MemoryStore<FriendRequest>();
+
   const server: AmigoServer = new AmigoServer();
   let client = null;
 
@@ -22,15 +26,14 @@ describe('Endpoint: Accept Friend Request', () => {
   });
 
   beforeEach(() => {
-    MemoryStore.friends = [];
-    MemoryStore.friendRequests = [
+    friendRequests.initialize([
       {
         accepted: null,
         id: 1,
         recipientUserId: '1',
         senderUserId: '2'
       }
-    ];
+    ]);
   });
 
   afterAll(done => {
@@ -55,49 +58,53 @@ describe('Endpoint: Accept Friend Request', () => {
 
   it('returns 409 if friend request is already accepted', done => {
     const id = 1;
-    MemoryStore.friendRequests[0].accepted = new Date();
+    friendRequests.get(id).then(friendRequest => {
+      friendRequest.accepted = new Date();
 
-    client.post(
-      `/request/${id}/accept`,
-      (err, req: Request, res: Response, obj) => {
-        expect(res.statusCode).toBe(409);
+      client.post(
+        `/request/${id}/accept`,
+        (err, req: Request, res: Response, obj) => {
+          expect(res.statusCode).toBe(409);
 
-        expect(err).toBeTruthy();
+          expect(err).toBeTruthy();
 
-        done();
-      }
-    );
+          done();
+        }
+      );
+    });
   });
 
   it('returns 200 with created friends if successful', done => {
     const id = 1;
-    const friendRequest = MemoryStore.friendRequests[0];
+    friendRequests.get(id).then(friendRequest => {
+      client.post(
+        `/request/${id}/accept`,
+        (err, req: Request, res: Response, obj) => {
+          expect(res.statusCode).toBe(200);
 
-    client.post(
-      `/request/${id}/accept`,
-      (err, req: Request, res: Response, obj) => {
-        expect(res.statusCode).toBe(200);
+          expect(obj).toBeTruthy();
 
-        expect(obj).toBeTruthy();
+          expect(obj.senderFriend).toBeTruthy();
+          expect(obj.senderFriend.created).toBeTruthy();
+          expect(obj.senderFriend.friendUserId).toBe(
+            friendRequest.recipientUserId
+          );
+          expect(obj.senderFriend.id).toBeTruthy();
+          expect(obj.senderFriend.userId).toBe(friendRequest.senderUserId);
 
-        expect(obj.senderFriend).toBeTruthy();
-        expect(obj.senderFriend.created).toBeTruthy();
-        expect(obj.senderFriend.friendUserId).toBe(
-          friendRequest.recipientUserId
-        );
-        expect(obj.senderFriend.id).toBeTruthy();
-        expect(obj.senderFriend.userId).toBe(friendRequest.senderUserId);
+          expect(obj.recipientFriend).toBeTruthy();
+          expect(obj.recipientFriend.created).toBeTruthy();
+          expect(obj.recipientFriend.friendUserId).toBe(
+            friendRequest.senderUserId
+          );
+          expect(obj.recipientFriend.id).toBeTruthy();
+          expect(obj.recipientFriend.userId).toBe(
+            friendRequest.recipientUserId
+          );
 
-        expect(obj.recipientFriend).toBeTruthy();
-        expect(obj.recipientFriend.created).toBeTruthy();
-        expect(obj.recipientFriend.friendUserId).toBe(
-          friendRequest.senderUserId
-        );
-        expect(obj.recipientFriend.id).toBeTruthy();
-        expect(obj.recipientFriend.userId).toBe(friendRequest.recipientUserId);
-
-        done();
-      }
-    );
+          done();
+        }
+      );
+    });
   });
 });
