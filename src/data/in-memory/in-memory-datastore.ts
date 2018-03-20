@@ -20,3 +20,5 @@ export class InMemoryDatastore implements IDatastore {
     return InMemoryDatastore.friendRequestStore;
   }
 }
+
+export default InMemoryDatastore;

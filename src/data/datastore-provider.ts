@@ -1,6 +1,10 @@
+import * as configuration from '../configuration/configuration';
 import { IDatastore } from './datastore';
-import { InMemoryDatastore } from './in-memory/in-memory-datastore';
 
 export function DatastoreProvider(): IDatastore {
-  return new InMemoryDatastore();
+  const settings = configuration.getSettings();
+
+  const datastore = require(settings.datastoreModule).default;
+
+  return new datastore();
 }

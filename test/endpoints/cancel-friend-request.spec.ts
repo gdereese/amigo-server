@@ -8,15 +8,15 @@ import { FriendRequest } from '../../src/models/friend-request';
 describe('Endpoint: Cancel Friend Request', () => {
   const datastore = new InMemoryDatastore();
 
-  const server: AmigoServer = new AmigoServer();
+  const server: AmigoServer = new AmigoServer({
+    datastoreModule: '../../src/data/in-memory/in-memory-datastore'
+  });
   let client = null;
 
   beforeAll(done => {
-    server.start(0, '127.0.0.1', () => {
+    server.start((address, port) => {
       client = restifyClients.createJsonClient({
-        url: `http://${server.server.address().address}:${
-          server.server.address().port
-        }`
+        url: `http://${address}:${port}`
       });
 
       done();

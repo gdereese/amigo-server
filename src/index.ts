@@ -1,6 +1,8 @@
 import * as program from 'commander';
 
 import { AmigoServer } from './amigo-server';
+import { ListenerSettings } from './configuration/listener-settings';
+import { Settings } from './configuration/settings';
 
 program
   .option('-p, --port <n>', 'Port to listen on', parseInt)
@@ -8,19 +10,16 @@ program
 
 console.log();
 
-if (!program.port) {
-  console.error('ERROR: No listen port was specified.');
-  console.log();
+const server = new AmigoServer({
+  datastoreModule: './in-memory/in-memory-datastore',
+  listener: {
+    port: program.port
+  }
+});
 
-  process.exit(1);
-}
-
-const server = new AmigoServer();
-server.start(program.port, '127.0.0.1', () => {
+server.start((address: string, port: number) => {
   console.log(
-    `amigo-server listening on ${server.server.address().address}:${
-      server.server.address().port
-    } (Ctrl+C to stop)...`
+    `amigo-server listening on ${address}:${port} (Ctrl+C to stop)...`
   );
 });
 
