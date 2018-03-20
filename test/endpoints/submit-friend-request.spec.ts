@@ -2,12 +2,12 @@ import { Next, Request, Response } from 'restify';
 import * as restifyClients from 'restify-clients';
 
 import { AmigoServer } from '../../src/amigo-server';
-import { MemoryStore } from '../../src/data/memory-store';
+import { InMemoryDatastore } from '../../src/data/in-memory/in-memory-datastore';
 import { FriendRequest } from '../../src/models/friend-request';
 import { SubmitFriendRequest } from '../../src/models/submit-friend-request';
 
 describe('Endpoint: Submit Friend Request', () => {
-  const friendRequests = new MemoryStore<FriendRequest>();
+  const datastore = new InMemoryDatastore();
 
   const server: AmigoServer = new AmigoServer();
   let client = null;
@@ -25,7 +25,7 @@ describe('Endpoint: Submit Friend Request', () => {
   });
 
   beforeEach(() => {
-    friendRequests.initialize();
+    datastore.friendRequests.initialize();
   });
 
   afterAll(done => {
@@ -53,7 +53,7 @@ describe('Endpoint: Submit Friend Request', () => {
   });
 
   it('returns 409 if an existing friend request is pending', done => {
-    friendRequests.create({
+    datastore.friendRequests.create({
       accepted: null,
       id: 1,
       recipientUserId: '2',
@@ -79,7 +79,7 @@ describe('Endpoint: Submit Friend Request', () => {
   });
 
   it('returns 409 if an existing friend request is accepted', done => {
-    friendRequests.create({
+    datastore.friendRequests.create({
       accepted: new Date(),
       id: 1,
       recipientUserId: '2',

@@ -1,11 +1,11 @@
-export interface IRepository {
-  create(entity: any): Promise<any>;
+export interface IRepository<T> {
+  create(entity: T): Promise<T>;
 
   delete(id: any): Promise<any>;
 
-  get(id: any): Promise<any>;
+  get(id: any): Promise<T>;
 
-  query(criteria: any): Promise<any[]>;
+  query(criteria: any): Promise<T[]>;
 
-  update(entity: any): Promise<any>;
+  update(entity: T): Promise<T>;
 }

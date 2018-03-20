@@ -2,11 +2,11 @@ import { Next, Request, Response } from 'restify';
 import * as restifyClients from 'restify-clients';
 
 import { AmigoServer } from '../../src/amigo-server';
-import { MemoryStore } from '../../src/data/memory-store';
+import { InMemoryDatastore } from '../../src/data/in-memory/in-memory-datastore';
 import { FriendRequest } from '../../src/models/friend-request';
 
 describe('Endpoint: Reject Friend Request', () => {
-  const friendRequests = new MemoryStore<FriendRequest>();
+  const datastore = new InMemoryDatastore();
 
   const server: AmigoServer = new AmigoServer();
   let client = null;
@@ -24,7 +24,7 @@ describe('Endpoint: Reject Friend Request', () => {
   });
 
   beforeEach(() => {
-    friendRequests.initialize([
+    datastore.friendRequests.initialize([
       {
         accepted: null,
         id: 1,
@@ -56,7 +56,7 @@ describe('Endpoint: Reject Friend Request', () => {
 
   it('returns 409 if friend request is already accepted', done => {
     const id = 1;
-    friendRequests.get(id).then(friendRequest => {
+    datastore.friendRequests.get(id).then(friendRequest => {
       friendRequest.accepted = new Date();
 
       client.post(

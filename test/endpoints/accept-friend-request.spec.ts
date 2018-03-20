@@ -2,13 +2,12 @@ import { Next, Request, Response } from 'restify';
 import * as restifyClients from 'restify-clients';
 
 import { AmigoServer } from '../../src/amigo-server';
-import { MemoryStore } from '../../src/data/memory-store';
-import { RepositoryProvider } from '../../src/data/repository-provider';
+import { InMemoryDatastore } from '../../src/data/in-memory/in-memory-datastore';
 import { Friend } from '../../src/models/friend';
 import { FriendRequest } from '../../src/models/friend-request';
 
 describe('Endpoint: Accept Friend Request', () => {
-  const friendRequests = new MemoryStore<FriendRequest>();
+  const datastore = new InMemoryDatastore();
 
   const server: AmigoServer = new AmigoServer();
   let client = null;
@@ -26,7 +25,7 @@ describe('Endpoint: Accept Friend Request', () => {
   });
 
   beforeEach(() => {
-    friendRequests.initialize([
+    datastore.friendRequests.initialize([
       {
         accepted: null,
         id: 1,
@@ -58,7 +57,7 @@ describe('Endpoint: Accept Friend Request', () => {
 
   it('returns 409 if friend request is already accepted', done => {
     const id = 1;
-    friendRequests.get(id).then(friendRequest => {
+    datastore.friendRequests.get(id).then(friendRequest => {
       friendRequest.accepted = new Date();
 
       client.post(
@@ -76,7 +75,7 @@ describe('Endpoint: Accept Friend Request', () => {
 
   it('returns 200 with created friends if successful', done => {
     const id = 1;
-    friendRequests.get(id).then(friendRequest => {
+    datastore.friendRequests.get(id).then(friendRequest => {
       client.post(
         `/request/${id}/accept`,
         (err, req: Request, res: Response, obj) => {
