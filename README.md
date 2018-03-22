@@ -19,8 +19,9 @@ amigo is not designed to serve as a method for authenticating users or storing u
   * User (sender) submits a friend request to another user (recipient)
   * Recipient can accept or reject the request
   * Sender can cancel/rescind the request before it is accepted
+  * Delete a user's link to a friend
   * Query pending friend requests by sender/recipient/both
-  * Query friends for a user
+  * Query a user's friends
 
 ## Compatibility
 
