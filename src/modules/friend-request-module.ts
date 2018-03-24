@@ -1,35 +1,35 @@
 import { Next, Request, Response, Server } from 'restify';
 
-import { FriendRequestAlreadyAcceptedGuard } from '../guards/friend-request-already-accepted-guard';
-import { FriendRequestAlreadyPendingGuard } from '../guards/friend-request-already-pending-guard';
-import { FriendRequestSameSenderAndRecipientGuard } from '../guards/friend-request-same-sender-and-recipient-guard';
-import { AcceptFriendRequestHandler } from '../handlers/accept-friend-request-handler';
-import { CancelFriendRequestHandler } from '../handlers/cancel-friend-request-handler';
-import { FindFriendRequestBySenderAndRecipientHandler } from '../handlers/find-friend-request-by-sender-and-recipient-handler';
-import { GetFriendRequestHandler } from '../handlers/get-friend-request-handler';
-import { GetPendingFriendRequestsHandler } from '../handlers/get-pending-friend-requests-handler';
-import { NoContentResponseHandler } from '../handlers/no-content-response-handler';
-import { OkResponseHandler } from '../handlers/ok-response-handler';
-import { RejectFriendRequestHandler } from '../handlers/reject-friend-request-handler';
-import { SetRequestValueHandler } from '../handlers/set-request-value-handler';
-import { SubmitFriendRequestHandler } from '../handlers/submit-friend-request-handler';
+import { friendRequestAlreadyAcceptedGuard } from '../guards/friend-request-already-accepted-guard';
+import { friendRequestAlreadyPendingGuard } from '../guards/friend-request-already-pending-guard';
+import { friendRequestSameSenderAndRecipientGuard } from '../guards/friend-request-same-sender-and-recipient-guard';
+import { acceptFriendRequestHandler } from '../handlers/accept-friend-request-handler';
+import { cancelFriendRequestHandler } from '../handlers/cancel-friend-request-handler';
+import { findFriendRequestBySenderAndRecipientHandler } from '../handlers/find-friend-request-by-sender-and-recipient-handler';
+import { getFriendRequestHandler } from '../handlers/get-friend-request-handler';
+import { getPendingFriendRequestsHandler } from '../handlers/get-pending-friend-requests-handler';
+import { noContentResponseHandler } from '../handlers/no-content-response-handler';
+import { okResponseHandler } from '../handlers/ok-response-handler';
+import { rejectFriendRequestHandler } from '../handlers/reject-friend-request-handler';
+import { setRequestValueHandler } from '../handlers/set-request-value-handler';
+import { submitFriendRequestHandler } from '../handlers/submit-friend-request-handler';
 import { FriendRequest } from '../models/friend-request';
 import { FriendRequestService } from '../services/friend-request-service';
-import { GetPendingFriendRequestsValidator } from '../validators/get-pending-friend-requests-validator';
+import { getPendingFriendRequestsValidator } from '../validators/get-pending-friend-requests-validator';
 
 export function register(server: Server, routeBase: string) {
   // Submit Friend Request
   server.post(routeBase, [
-    SetRequestValueHandler('friendRequestService', new FriendRequestService()),
-    FindFriendRequestBySenderAndRecipientHandler(
+    setRequestValueHandler('friendRequestService', new FriendRequestService()),
+    findFriendRequestBySenderAndRecipientHandler(
       'body',
       'friendRequestService',
       'friendRequest'
     ),
-    FriendRequestSameSenderAndRecipientGuard('body'),
-    FriendRequestAlreadyPendingGuard('body', 'friendRequest'),
-    FriendRequestAlreadyAcceptedGuard('friendRequest'),
-    SubmitFriendRequestHandler('body', 'friendRequestService', 'friendRequest'),
+    friendRequestSameSenderAndRecipientGuard('body'),
+    friendRequestAlreadyPendingGuard('body', 'friendRequest'),
+    friendRequestAlreadyAcceptedGuard('friendRequest'),
+    submitFriendRequestHandler('body', 'friendRequestService', 'friendRequest'),
     (req: any, res: Response, next: Next) => {
       const friendRequest: FriendRequest = req.friendRequest;
 
@@ -45,33 +45,33 @@ export function register(server: Server, routeBase: string) {
 
   // Accept Friend Request
   server.post(`${routeBase}/:id/accept`, [
-    SetRequestValueHandler('friendRequestService', new FriendRequestService()),
-    GetFriendRequestHandler('id', 'friendRequestService', 'friendRequest'),
-    FriendRequestAlreadyAcceptedGuard('friendRequest'),
-    AcceptFriendRequestHandler(
+    setRequestValueHandler('friendRequestService', new FriendRequestService()),
+    getFriendRequestHandler('id', 'friendRequestService', 'friendRequest'),
+    friendRequestAlreadyAcceptedGuard('friendRequest'),
+    acceptFriendRequestHandler(
       'friendRequest',
       'friendRequestService',
       'friends'
     ),
-    OkResponseHandler('friends')
+    okResponseHandler('friends')
   ]);
 
   // Reject Friend Request
   server.post(`${routeBase}/:id/reject`, [
-    SetRequestValueHandler('friendRequestService', new FriendRequestService()),
-    GetFriendRequestHandler('id', 'friendRequestService', 'friendRequest'),
-    FriendRequestAlreadyAcceptedGuard('friendRequest'),
-    RejectFriendRequestHandler('friendRequest', 'friendRequestService'),
-    NoContentResponseHandler()
+    setRequestValueHandler('friendRequestService', new FriendRequestService()),
+    getFriendRequestHandler('id', 'friendRequestService', 'friendRequest'),
+    friendRequestAlreadyAcceptedGuard('friendRequest'),
+    rejectFriendRequestHandler('friendRequest', 'friendRequestService'),
+    noContentResponseHandler()
   ]);
 
   // Cancel Friend Request
   server.post(`${routeBase}/:id/cancel`, [
-    SetRequestValueHandler('friendRequestService', new FriendRequestService()),
-    GetFriendRequestHandler('id', 'friendRequestService', 'friendRequest'),
-    FriendRequestAlreadyAcceptedGuard('friendRequest'),
-    CancelFriendRequestHandler('friendRequest', 'friendRequestService'),
-    NoContentResponseHandler()
+    setRequestValueHandler('friendRequestService', new FriendRequestService()),
+    getFriendRequestHandler('id', 'friendRequestService', 'friendRequest'),
+    friendRequestAlreadyAcceptedGuard('friendRequest'),
+    cancelFriendRequestHandler('friendRequest', 'friendRequestService'),
+    noContentResponseHandler()
   ]);
 
   // Get Friend Request
@@ -81,20 +81,20 @@ export function register(server: Server, routeBase: string) {
       path: `${routeBase}/:id`
     },
     [
-      SetRequestValueHandler(
+      setRequestValueHandler(
         'friendRequestService',
         new FriendRequestService()
       ),
-      GetFriendRequestHandler('id', 'friendRequestService', 'friendRequest'),
-      OkResponseHandler('friendRequest')
+      getFriendRequestHandler('id', 'friendRequestService', 'friendRequest'),
+      okResponseHandler('friendRequest')
     ]
   );
 
   // Get Pending Friend Requests
   server.get(routeBase, [
-    SetRequestValueHandler('friendRequestService', new FriendRequestService()),
-    GetPendingFriendRequestsValidator(),
-    GetPendingFriendRequestsHandler('friendRequestService', 'friendRequests'),
-    OkResponseHandler('friendRequests')
+    setRequestValueHandler('friendRequestService', new FriendRequestService()),
+    getPendingFriendRequestsValidator(),
+    getPendingFriendRequestsHandler('friendRequestService', 'friendRequests'),
+    okResponseHandler('friendRequests')
   ]);
 }

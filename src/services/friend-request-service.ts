@@ -1,12 +1,12 @@
 import * as moment from 'moment';
 
-import { DatastoreProvider } from '../data/datastore-provider';
+import { datastoreProvider } from '../data/datastore-provider';
 import { Friend } from '../models/friend';
 import { FriendRequest } from '../models/friend-request';
 import { SubmitFriendRequest } from '../models/submit-friend-request';
 
 export class FriendRequestService {
-  private datastore = DatastoreProvider();
+  private datastore = datastoreProvider();
 
   public async acceptFriendRequest(id: number): Promise<any> {
     const friendRequest = await this.datastore.friendRequests.get(id);

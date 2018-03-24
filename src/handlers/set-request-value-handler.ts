@@ -1,6 +1,6 @@
 import { Next, Request, RequestHandler, Response } from 'restify';
 
-export function SetRequestValueHandler(
+export function setRequestValueHandler(
   key: string,
   value?: any
 ): RequestHandler {

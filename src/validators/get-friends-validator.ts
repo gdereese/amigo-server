@@ -1,7 +1,7 @@
 import { Next, Request, RequestHandler, Response } from 'restify';
 import * as errors from 'restify-errors';
 
-export function GetFriendsValidator(): RequestHandler {
+export function getFriendsValidator(): RequestHandler {
   return (req: Request, res: Response, next: Next) => {
     if (
       req.query.userId &&

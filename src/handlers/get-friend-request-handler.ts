@@ -3,7 +3,7 @@ import * as errors from 'restify-errors';
 
 import { FriendRequestService } from '../services/friend-request-service';
 
-export function GetFriendRequestHandler(
+export function getFriendRequestHandler(
   idParamsKey: string,
   friendRequestServiceReqKey: string,
   friendRequestReqKey: string

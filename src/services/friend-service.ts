@@ -1,8 +1,8 @@
-import { DatastoreProvider } from '../data/datastore-provider';
+import { datastoreProvider } from '../data/datastore-provider';
 import { Friend } from '../models/friend';
 
 export class FriendService {
-  private datastore = DatastoreProvider();
+  private datastore = datastoreProvider();
 
   public deleteFriend(id: number): Promise<any> {
     return this.datastore.friends.delete(id);

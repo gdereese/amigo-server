@@ -2,7 +2,7 @@ import { Next, Request, RequestHandler, Response } from 'restify';
 
 import { FriendService } from '../services/friend-service';
 
-export function GetFriendsHandler(
+export function getFriendsHandler(
   friendServiceReqKey: string,
   friendsReqKey: string
 ): RequestHandler {

@@ -1,35 +1,35 @@
 import { Server } from 'restify';
 
-import { DeleteFriendHandler } from '../handlers/delete-friend-handler';
-import { GetFriendHandler } from '../handlers/get-friend-handler';
-import { GetFriendsHandler } from '../handlers/get-friends-handler';
-import { NoContentResponseHandler } from '../handlers/no-content-response-handler';
-import { OkResponseHandler } from '../handlers/ok-response-handler';
-import { SetRequestValueHandler } from '../handlers/set-request-value-handler';
+import { deleteFriendHandler } from '../handlers/delete-friend-handler';
+import { getFriendHandler } from '../handlers/get-friend-handler';
+import { getFriendsHandler } from '../handlers/get-friends-handler';
+import { noContentResponseHandler } from '../handlers/no-content-response-handler';
+import { okResponseHandler } from '../handlers/ok-response-handler';
+import { setRequestValueHandler } from '../handlers/set-request-value-handler';
 import { FriendService } from '../services/friend-service';
-import { GetFriendsValidator } from '../validators/get-friends-validator';
+import { getFriendsValidator } from '../validators/get-friends-validator';
 
 export function register(server: Server, routeBase: string) {
   // Get Friend
   server.get(`${routeBase}/:id`, [
-    SetRequestValueHandler('friendService', new FriendService()),
-    GetFriendHandler('id', 'friendService', 'friend'),
-    OkResponseHandler('friend')
+    setRequestValueHandler('friendService', new FriendService()),
+    getFriendHandler('id', 'friendService', 'friend'),
+    okResponseHandler('friend')
   ]);
 
   // Get Friends
   server.get(routeBase, [
-    SetRequestValueHandler('friendService', new FriendService()),
-    GetFriendsValidator(),
-    GetFriendsHandler('friendService', 'friends'),
-    OkResponseHandler('friends')
+    setRequestValueHandler('friendService', new FriendService()),
+    getFriendsValidator(),
+    getFriendsHandler('friendService', 'friends'),
+    okResponseHandler('friends')
   ]);
 
   // Delete Friend
   server.del(`${routeBase}/:id`, [
-    SetRequestValueHandler('friendService', new FriendService()),
-    GetFriendHandler('id', 'friendService', 'friend'),
-    DeleteFriendHandler('friendService', 'friend'),
-    NoContentResponseHandler()
+    setRequestValueHandler('friendService', new FriendService()),
+    getFriendHandler('id', 'friendService', 'friend'),
+    deleteFriendHandler('friendService', 'friend'),
+    noContentResponseHandler()
   ]);
 }

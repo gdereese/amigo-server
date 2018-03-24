@@ -3,7 +3,7 @@ import * as errors from 'restify-errors';
 
 import * as stringArrayUtils from '../validators/string-array-utils';
 
-export function GetPendingFriendRequestsValidator(): RequestHandler {
+export function getPendingFriendRequestsValidator(): RequestHandler {
   return (req: any, res: Response, next: Next) => {
     if (
       req.query.by &&

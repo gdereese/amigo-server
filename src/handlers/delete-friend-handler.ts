@@ -3,7 +3,7 @@ import { Next, Request, RequestHandler, Response } from 'restify';
 import { Friend } from '../models/friend';
 import { FriendService } from '../services/friend-service';
 
-export function DeleteFriendHandler(
+export function deleteFriendHandler(
   friendServiceReqKey: string,
   friendReqKey: string
 ): RequestHandler {

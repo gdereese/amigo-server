@@ -3,7 +3,7 @@ import { Next, Request, RequestHandler, Response } from 'restify';
 import { FriendRequest } from '../models/friend-request';
 import { FriendRequestService } from '../services/friend-request-service';
 
-export function RejectFriendRequestHandler(
+export function rejectFriendRequestHandler(
   friendRequestReqKey: string,
   friendRequestServiceReqKey: string
 ): RequestHandler {

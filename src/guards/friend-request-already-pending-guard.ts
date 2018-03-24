@@ -1,13 +1,13 @@
-import { Next, Request, Response } from 'restify';
+import { Next, Request, RequestHandler, Response } from 'restify';
 import * as errors from 'restify-errors';
 
 import { FriendRequest } from '../models/friend-request';
 import { SubmitFriendRequest } from '../models/submit-friend-request';
 
-export function FriendRequestAlreadyPendingGuard(
+export function friendRequestAlreadyPendingGuard(
   submitFriendRequestReqKey: string,
   existingFriendRequestReqKey: string
-) {
+): RequestHandler {
   return (req, res: Response, next: Next) => {
     const submitRequest: SubmitFriendRequest = req[submitFriendRequestReqKey];
     const friendRequest: FriendRequest = req[existingFriendRequestReqKey];

@@ -4,7 +4,7 @@ import { FriendRequest } from '../models/friend-request';
 import { SubmitFriendRequest } from '../models/submit-friend-request';
 import { FriendRequestService } from '../services/friend-request-service';
 
-export function SubmitFriendRequestHandler(
+export function submitFriendRequestHandler(
   submitFriendRequestReqKey: string,
   friendRequestServiceReqKey: string,
   friendRequestReqKey: string

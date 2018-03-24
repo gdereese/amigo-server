@@ -1,11 +1,11 @@
-import { Next, Request, Response } from 'restify';
+import { Next, Request, RequestHandler, Response } from 'restify';
 import * as errors from 'restify-errors';
 
 import { FriendRequest } from '../models/friend-request';
 
-export function FriendRequestAlreadyAcceptedGuard(
+export function friendRequestAlreadyAcceptedGuard(
   existingFriendRequestReqKey: string
-) {
+): RequestHandler {
   return (req, res: Response, next: Next) => {
     const friendRequest: FriendRequest = req[existingFriendRequestReqKey];
 

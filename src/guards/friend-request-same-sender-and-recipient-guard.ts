@@ -1,11 +1,11 @@
-import { Next, Request, Response } from 'restify';
+import { Next, Request, RequestHandler, Response } from 'restify';
 import * as errors from 'restify-errors';
 
 import { SubmitFriendRequest } from '../models/submit-friend-request';
 
-export function FriendRequestSameSenderAndRecipientGuard(
+export function friendRequestSameSenderAndRecipientGuard(
   submitFriendRequestReqKey: string
-) {
+): RequestHandler {
   return (req, res: Response, next: Next) => {
     const submitRequest: SubmitFriendRequest = req[submitFriendRequestReqKey];
 
