@@ -1,9 +1,14 @@
 {
   "name": "amigo-server",
   "version": "0.1.0",
-  "description":
-    "Server that allows you to create and manage a graph of users linked to others users as friends.",
-  "keywords": ["nodejs", "typescript", "restify", "api", "friends"],
+  "description": "Server that allows you to create and manage a graph of users linked to others users as friends.",
+  "keywords": [
+    "nodejs",
+    "typescript",
+    "restify",
+    "api",
+    "friends"
+  ],
   "author": "Gary DeReese Jr",
   "license": "MIT",
   "repository": {
@@ -15,7 +20,9 @@
   },
   "main": "dist/index.js",
   "bin": "dist/index.js",
-  "files": ["dist/*.js"],
+  "files": [
+    "dist/*.js"
+  ],
   "scripts": {
     "build": "npm run-script lint && tsc",
     "license-check": "abogado",

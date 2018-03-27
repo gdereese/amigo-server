@@ -1,7 +1,7 @@
+import { IDatastore } from '../../data/datastore';
+import { IRepository } from '../../data/repository';
 import { Friend } from '../../models/friend';
 import { FriendRequest } from '../../models/friend-request';
-import { IDatastore } from '../datastore';
-import { IRepository } from '../repository';
 import { InMemoryRepository } from './in-memory-repository';
 
 export class InMemoryDatastore implements IDatastore {

@@ -13,7 +13,7 @@ program
 console.log();
 
 const server = new AmigoServer({
-  datastoreModule: './in-memory/in-memory-datastore',
+  datastoreModule: './stores//in-memory/in-memory-datastore',
   listener: {
     port: program.port
   }

@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import * as lodashQuery from 'lodash-query';
 
-import { IRepository } from '../repository';
+import { IRepository } from '../../data/repository';
 
 const query = lodashQuery(_, false);
 
