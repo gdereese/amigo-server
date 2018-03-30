@@ -7,9 +7,9 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Run Tests",
-      "program": "${workspaceFolder}/node_modules/jasmine-ts/lib/index.js",
-      "args": ["test/**/*.spec.ts"],
+      "name": "Debug Tests",
+      "program": "${workspaceFolder}/node_modules/jasmine/bin/jasmine.js",
+      "args": ["test/**/*.spec.js"],
       "stopOnEntry": false,
       "cwd": "${workspaceRoot}",
       "protocol": "inspector",
@@ -18,7 +18,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
+      "name": "Debug Server",
       "program": "${workspaceFolder}/dist/index.js",
       "preLaunchTask": "build",
       "args": ["--port", "3000"]

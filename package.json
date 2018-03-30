@@ -4,7 +4,6 @@
   "description": "Server that allows you to create and manage a graph of users linked to others users as friends.",
   "keywords": [
     "nodejs",
-    "typescript",
     "restify",
     "api",
     "friends"
@@ -24,30 +23,30 @@
     "dist/*.js"
   ],
   "scripts": {
-    "build": "npm run-script lint && tsc",
+    "build": "npm run-script lint",
     "license-check": "abogado",
-    "lint": "tslint --project tsconfig.json",
+    "lint": "eslint src/** test/**",
     "postversion": "git push && git push --tags",
-    "prepublishOnly": "npm run-script lint && tsc",
+    "prepublishOnly": "npm run-script lint",
     "preversion": "npm test",
     "version": "npm run-script build",
-    "test": "jasmine-ts test/**/*.spec.ts"
+    "test": "jasmine test/**/*.spec.js"
   },
   "devDependencies": {
-    "@types/jasmine": "2.8.6",
-    "@types/lodash": "4.14.105",
-    "@types/node": "9.4.7",
-    "@types/restify": "5.0.7",
     "abogado": "1.0.4",
-    "jasmine-ts": "0.2.1",
+    "eslint": "4.19.1",
+    "eslint-config-prettier": "2.9.0",
+    "eslint-config-standard": "11.0.0",
+    "eslint-plugin-jasmine": "2.9.3",
+    "eslint-plugin-node": "6.0.1",
+    "eslint-plugin-standard": "3.0.1",
+    "jasmine": "3.1.0",
     "prettier": "1.11.1",
-    "restify-clients": "2.0.0",
-    "tslint": "5.9.1",
-    "tslint-config-prettier": "1.10.0",
-    "typescript": "2.7.2"
+    "restify-clients": "2.0.0"
   },
   "dependencies": {
     "commander": "2.15.0",
+    "fortune": "5.4.2",
     "lodash": "4.17.5",
     "lodash-query": "1.4.2",
     "moment": "2.21.0",
