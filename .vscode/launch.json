@@ -8,10 +8,10 @@
       "type": "node",
       "request": "launch",
       "name": "Debug Tests",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "build",
       "program": "${workspaceFolder}/node_modules/jasmine/bin/jasmine.js",
       "args": ["test/**/*.spec.js"],
-      "stopOnEntry": false,
-      "cwd": "${workspaceRoot}",
       "protocol": "inspector",
       "outputCapture": "std"
     },
@@ -19,9 +19,11 @@
       "type": "node",
       "request": "launch",
       "name": "Debug Server",
-      "program": "${workspaceFolder}/dist/index.js",
+      "cwd": "${workspaceFolder}",
       "preLaunchTask": "build",
-      "args": ["--port", "3000"]
+      "program": "${workspaceFolder}/src/index.js",
+      "args": ["--port", "3000"],
+      "protocol": "inspector"
     }
   ]
 }

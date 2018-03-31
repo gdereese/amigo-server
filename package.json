@@ -1,13 +1,9 @@
 {
   "name": "amigo-server",
   "version": "0.1.0",
-  "description": "Server that allows you to create and manage a graph of users linked to others users as friends.",
-  "keywords": [
-    "nodejs",
-    "restify",
-    "api",
-    "friends"
-  ],
+  "description":
+    "Server that allows you to create and manage a graph of users linked to others users as friends.",
+  "keywords": ["nodejs", "restify", "api", "friends"],
   "author": "Gary DeReese Jr",
   "license": "MIT",
   "repository": {
@@ -19,21 +15,20 @@
   },
   "main": "dist/index.js",
   "bin": "dist/index.js",
-  "files": [
-    "dist/*.js"
-  ],
+  "files": ["dist/**/*.js"],
   "scripts": {
-    "build": "npm run-script lint",
+    "build": "npm run-script lint && babel src -d dist",
     "license-check": "abogado",
     "lint": "eslint src/** test/**",
     "postversion": "git push && git push --tags",
-    "prepublishOnly": "npm run-script lint",
+    "prepublishOnly": "npm run-script build",
     "preversion": "npm test",
     "version": "npm run-script build",
     "test": "jasmine test/**/*.spec.js"
   },
   "devDependencies": {
     "abogado": "1.0.4",
+    "babel-cli": "6.26.0",
     "eslint": "4.19.1",
     "eslint-config-prettier": "2.9.0",
     "eslint-config-standard": "11.0.0",

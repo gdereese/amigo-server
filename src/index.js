@@ -17,12 +17,8 @@ const settings = {};
 
 amigoServer(server, settings);
 
-server.listen(process.address, process.port, () => {
-  console.log(
-    `amigo-server listening on ${server.address().address}:${
-      server.address().port
-    } (Ctrl+C to stop)...`
-  );
+server.listen(program.port, program.address, () => {
+  console.log(`amigo-server listening at ${server.url} (Ctrl+C to stop)...`);
 });
 
 module.exports = amigoServer;
