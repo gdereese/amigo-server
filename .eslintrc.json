@@ -13,6 +13,7 @@
   },
   "plugins": ["jasmine", "node"],
   "rules": {
-    "no-console": 0
+    "no-console": 0,
+    "node/shebang": 0
   }
 }
