@@ -15,7 +15,7 @@
   },
   "main": "dist/index.js",
   "bin": "dist/index.js",
-  "files": ["dist/**/*.js"],
+  "files": ["dist/**"],
   "scripts": {
     "build": "npm run-script lint && babel src -d dist",
     "license-check": "abogado",
@@ -27,7 +27,7 @@
     "test": "jasmine test/**/*.spec.js"
   },
   "devDependencies": {
-    "abogado": "1.0.4",
+    "abogado": "1.0.7",
     "babel-cli": "6.26.0",
     "eslint": "4.19.1",
     "eslint-config-prettier": "2.9.0",
@@ -37,15 +37,14 @@
     "eslint-plugin-standard": "3.0.1",
     "jasmine": "3.1.0",
     "prettier": "1.11.1",
-    "restify-clients": "2.0.0"
+    "restify-clients": "2.0.1"
   },
   "dependencies": {
-    "commander": "2.15.0",
+    "commander": "2.15.1",
     "fortune": "5.4.2",
     "lodash": "4.17.5",
-    "lodash-query": "1.4.2",
-    "moment": "2.21.0",
-    "restify": "6.3.4",
+    "moment": "2.22.0",
+    "restify": "7.1.0",
     "restify-errors": "6.0.0"
   }
 }
