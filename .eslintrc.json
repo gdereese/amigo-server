@@ -5,13 +5,13 @@
   "extends": [
     "eslint:recommended",
     "plugin:node/recommended",
-    "eslint-config-prettier"
+    "plugin:prettier/recommended"
   ],
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module"
   },
-  "plugins": ["jasmine", "node"],
+  "plugins": ["jasmine", "node", "prettier"],
   "rules": {
     "no-console": 0,
     "node/shebang": 0
