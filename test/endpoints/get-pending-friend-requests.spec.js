@@ -159,6 +159,7 @@ describe('Endpoint: Get Pending Friend Requests', () => {
           const isUserIdMatch =
             friendRequest.senderUserId === userId ||
             friendRequest.recipientUserId === userId;
+
           expect(isUserIdMatch).toBeTruthy();
         }
 
