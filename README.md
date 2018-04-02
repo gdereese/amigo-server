@@ -9,7 +9,7 @@ Server that allows you to create and manage a graph of users linked to others us
 
 amigo is useful for providing a basic social network to users of an existing or in-development application by running this server in your application environment.
 
-It is implemented as a [Node](https://nodejs.org) server and is intended to either be hosted as a stand-alone process or included as a dependency of an existing Node server and hosted in that process alongside whatever listeners it has configured.
+It is implemented as a [Node](https://nodejs.org) [Restify](http://restify.com) server and is intended to either be hosted as a stand-alone process or included as a dependency of an existing Node server and hosted in that process alongside whatever listeners it has configured.
 
 amigo is not designed to serve as a method for authenticating users or storing user details. Rather, it merely serves as system for referencing existing users in your primary system and maintaining friend relationships between that set of users.
 
@@ -56,16 +56,38 @@ Usage: amigo-server [options]
 
   Options:
 
-    -p, --port <n>  Port to listen on
-    -h, --help      output usage information
+    -a, --address <a>  Address to listen on (default: 127.0.0.1)
+    -p, --port <n>     Port to listen on
+    -h, --help         output usage information
 ```
 
-If you do not specify the `--port` option, a port will be selected at random.
+Like this:
+
+```
+$ amigo-server --port 1234
+```
+
+If you do not specify the `--port` option, an open port will be selected at random.
 
 ### Included in Another Server
 
-TODO
+To host amigo in your own Restify server process, import this module into your package and invoke the `amigoServer()` function:
 
-## API Documentation
+```
+const amigoServer = require('amigo-server');
+
+const server = restify.createServer();
+
+const settings = {};
+
+// setup existing Restify server instance with amigo endpoints
+amigoServer(server, settings);
+
+server.listen(1234, () => {
+  console.log('Server started!');
+});
+```
+
+### Read More
 
 TODO

@@ -6,8 +6,8 @@ const restify = require('restify');
 const amigoServer = require('./amigo-server');
 
 program
-  .option('-a, --address <a>', 'Address to listen on', '127.0.0.1')
-  .option('-p, --port <n>', 'Port to listen on', parseInt)
+  .option('-a, --address <address>', 'Address to listen on', '127.0.0.1')
+  .option('-p, --port <number>', 'Port to listen on', parseInt)
   .parse(process.argv);
 
 console.log();

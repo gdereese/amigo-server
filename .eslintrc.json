@@ -15,9 +15,7 @@
   "plugins": ["jasmine", "node", "prettier"],
   "rules": {
     "no-console": 0,
-
     "jasmine/new-line-before-expect": 0,
-
     "node/shebang": 0
   }
 }
