@@ -1,4 +1,6 @@
-var config = {};
+const Settings = require('./settings');
+
+var config = new Settings();
 
 const configProvider = {
   getConfig() {
